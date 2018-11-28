@@ -167,8 +167,8 @@ applyFilter(struct Filter *filter, cs1300bmp *input, cs1300bmp *output)
 	  for (int i = 0; i < filter_size; i++) {	
 	    output_begin
 	      = output_begin
-	      + (input -> color[plane][rowminus + i][colminus + j] 
-		 * filter -> get(i, j) );
+	      + (input -> color[plane][rowminus + j][colminus + i] 
+		 * filter -> get(j, i) );
 	  }
 	}
 	
