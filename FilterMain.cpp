@@ -146,7 +146,6 @@ applyFilter(struct Filter *filter, cs1300bmp *input, cs1300bmp *output)
   #endif
   output -> width = input -> width;
   output -> height = input -> height;
-  int filter_size = filter -> getSize();
   int filter_divisor = filter -> getDivisor();
   int input_width = (input -> width) -1;
   int input_height = (input -> height) -1;
@@ -161,15 +160,16 @@ applyFilter(struct Filter *filter, cs1300bmp *input, cs1300bmp *output)
 	int t = 0;
 	output -> color[plane][row][col] = 0;
 	int output_begin = 0;
+        output_begin = output_begin + (input->color[plane][rowminus][colminus] * filter->get(0,0));
+        output_begin = output_begin + (input->color[plane][rowminus][colminus+1] * filter->get(0,1));
+        output_begin = output_begin + (input->color[plane][rowminus][colminus+2] * filter->get(0,2));
+        output_begin = output_begin + (input->color[plane][rowminus+1][colminus] * filter->get(1,0));
+        output_begin = output_begin + (input->color[plane][rowminus+1][colminus+1] * filter->get(1,1));
+        output_begin = output_begin + (input->color[plane][rowminus+1][colminus+2] * filter->get(1,2));
+        output_begin = output_begin + (input->color[plane][rowminus+2][colminus] * filter->get(2,0));
+        output_begin = output_begin + (input->color[plane][rowminus+2][colminus+1] * filter->get(2,1));
+        output_begin = output_begin + (input->color[plane][rowminus+2][colminus+2] * filter->get(2,2));
 
-	for (int j = 0; j < filter_size; j++) {
-	  for (int i = 0; i < filter_size; i++) {	
-	    output_begin
-	      = output_begin
-	      + (input -> color[plane][rowminus + j][colminus + i] 
-		 * filter -> get(j, i) );
-	  }
-	}
 	
 	output_begin = 	
 	  output_begin / filter_divisor;
