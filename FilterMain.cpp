@@ -149,7 +149,16 @@ applyFilter(struct Filter *filter, cs1300bmp *input, cs1300bmp *output)
   int filter_divisor = filter -> getDivisor();
   int input_width = (input -> width) -1;
   int input_height = (input -> height) -1;
-	
+  int get00 = filter->get(0,0);
+  int get01 = filter->get(0,1);
+  int get02 = filter->get(0,2);
+  int get10 = filter->get(1,0);
+  int get11 = filter->get(1,1);
+  int get12 = filter->get(1,2);
+  int get20 = filter->get(2,0);
+  int get21 = filter->get(2,1);
+  int get22 = filter->get(2,2);
+
 
   for(int col = 1; col < input_width; col++) {
     int colminus = col-1;
@@ -158,21 +167,22 @@ applyFilter(struct Filter *filter, cs1300bmp *input, cs1300bmp *output)
       for(int plane = 0; plane < 3; plane++) {
 
 	int t = 0;
-	output -> color[plane][row][col] = 0;
 	int output_begin = 0;
-        output_begin = output_begin + (input->color[plane][rowminus][colminus] * filter->get(0,0));
-        output_begin = output_begin + (input->color[plane][rowminus][colminus+1] * filter->get(0,1));
-        output_begin = output_begin + (input->color[plane][rowminus][colminus+2] * filter->get(0,2));
-        output_begin = output_begin + (input->color[plane][rowminus+1][colminus] * filter->get(1,0));
-        output_begin = output_begin + (input->color[plane][rowminus+1][colminus+1] * filter->get(1,1));
-        output_begin = output_begin + (input->color[plane][rowminus+1][colminus+2] * filter->get(1,2));
-        output_begin = output_begin + (input->color[plane][rowminus+2][colminus] * filter->get(2,0));
-        output_begin = output_begin + (input->color[plane][rowminus+2][colminus+1] * filter->get(2,1));
-        output_begin = output_begin + (input->color[plane][rowminus+2][colminus+2] * filter->get(2,2));
+        output_begin = output_begin + (input->color[plane][rowminus][colminus] * get00);
+        output_begin = output_begin + (input->color[plane][rowminus][colminus+1] * get01);
+        output_begin = output_begin + (input->color[plane][rowminus][colminus+2] * get02);
+        output_begin = output_begin + (input->color[plane][rowminus+1][colminus] * get10);
+        output_begin = output_begin + (input->color[plane][rowminus+1][colminus+1] * get11);
+        output_begin = output_begin + (input->color[plane][rowminus+1][colminus+2] * get12);
+        output_begin = output_begin + (input->color[plane][rowminus+2][colminus] * get20);
+        output_begin = output_begin + (input->color[plane][rowminus+2][colminus+1] * get21);
+        output_begin = output_begin + (input->color[plane][rowminus+2][colminus+2] * get22);
 
-	
-	output_begin = 	
-	  output_begin / filter_divisor;
+	if(filter_divisor != 1)
+	{
+	  output_begin = 	
+	    output_begin / filter_divisor;
+	}
 
 	if ( output_begin  < 0 ) {
 	  output_begin = 0;
