@@ -158,25 +158,26 @@ applyFilter(struct Filter *filter, cs1300bmp *input, cs1300bmp *output)
   int get20 = filter->get(2,0);
   int get21 = filter->get(2,1);
   int get22 = filter->get(2,2);
-
+  int colminus = 0;
+  int rowminus = 0;
+  int output_begin;
+	
 
   for(int col = 1; col < input_width; col++) {
-    int colminus = col-1;
+    colminus = col-1;
     for(int row = 1; row < input_height ; row++) {
-      int rowminus = row-1;
-      for(int plane = 0; plane < 3; plane++) {
+      rowminus = row-1;
 
-	int t = 0;
-	int output_begin = 0;
-        output_begin = output_begin + (input->color[plane][rowminus][colminus] * get00);
-        output_begin = output_begin + (input->color[plane][rowminus][colminus+1] * get01);
-        output_begin = output_begin + (input->color[plane][rowminus][colminus+2] * get02);
-        output_begin = output_begin + (input->color[plane][rowminus+1][colminus] * get10);
-        output_begin = output_begin + (input->color[plane][rowminus+1][colminus+1] * get11);
-        output_begin = output_begin + (input->color[plane][rowminus+1][colminus+2] * get12);
-        output_begin = output_begin + (input->color[plane][rowminus+2][colminus] * get20);
-        output_begin = output_begin + (input->color[plane][rowminus+2][colminus+1] * get21);
-        output_begin = output_begin + (input->color[plane][rowminus+2][colminus+2] * get22);
+	output_begin = 0;
+        output_begin = output_begin + (input->color[0][rowminus][colminus] * get00);
+        output_begin = output_begin + (input->color[0][rowminus][colminus+1] * get01);
+        output_begin = output_begin + (input->color[0][rowminus][colminus+2] * get02);
+        output_begin = output_begin + (input->color[0][rowminus+1][colminus] * get10);
+        output_begin = output_begin + (input->color[0][rowminus+1][colminus+1] * get11);
+        output_begin = output_begin + (input->color[0][rowminus+1][colminus+2] * get12);
+        output_begin = output_begin + (input->color[0][rowminus+2][colminus] * get20);
+        output_begin = output_begin + (input->color[0][rowminus+2][colminus+1] * get21);
+        output_begin = output_begin + (input->color[0][rowminus+2][colminus+2] * get22);
 
 	if(filter_divisor != 1)
 	{
@@ -191,8 +192,60 @@ applyFilter(struct Filter *filter, cs1300bmp *input, cs1300bmp *output)
 	if ( output_begin  > 255 ) { 
 	  output_begin = 255;
 	}
-	output -> color[plane][row][col] = output_begin;
-      }
+	output -> color[0][row][col] = output_begin;
+      
+	output_begin = 0;
+        output_begin = output_begin + (input->color[1][rowminus][colminus] * get00);
+        output_begin = output_begin + (input->color[1][rowminus][colminus+1] * get01);
+        output_begin = output_begin + (input->color[1][rowminus][colminus+2] * get02);
+        output_begin = output_begin + (input->color[1][rowminus+1][colminus] * get10);
+        output_begin = output_begin + (input->color[1][rowminus+1][colminus+1] * get11);
+        output_begin = output_begin + (input->color[1][rowminus+1][colminus+2] * get12);
+        output_begin = output_begin + (input->color[1][rowminus+2][colminus] * get20);
+        output_begin = output_begin + (input->color[1][rowminus+2][colminus+1] * get21);
+        output_begin = output_begin + (input->color[1][rowminus+2][colminus+2] * get22);
+
+	if(filter_divisor != 1)
+	{
+	  output_begin = 	
+	    output_begin / filter_divisor;
+	}
+
+	if ( output_begin  < 0 ) {
+	  output_begin = 0;
+	}
+
+	if ( output_begin  > 255 ) { 
+	  output_begin = 255;
+	}
+	output -> color[1][row][col] = output_begin;
+	    
+	
+	output_begin = 0;
+        output_begin = output_begin + (input->color[2][rowminus][colminus] * get00);
+        output_begin = output_begin + (input->color[2][rowminus][colminus+1] * get01);
+        output_begin = output_begin + (input->color[2][rowminus][colminus+2] * get02);
+        output_begin = output_begin + (input->color[2][rowminus+1][colminus] * get10);
+        output_begin = output_begin + (input->color[2][rowminus+1][colminus+1] * get11);
+        output_begin = output_begin + (input->color[2][rowminus+1][colminus+2] * get12);
+        output_begin = output_begin + (input->color[2][rowminus+2][colminus] * get20);
+        output_begin = output_begin + (input->color[2][rowminus+2][colminus+1] * get21);
+        output_begin = output_begin + (input->color[2][rowminus+2][colminus+2] * get22);
+
+	if(filter_divisor != 1)
+	{
+	  output_begin = 	
+	    output_begin / filter_divisor;
+	}
+
+	if ( output_begin  < 0 ) {
+	  output_begin = 0;
+	}
+
+	if ( output_begin  > 255 ) { 
+	  output_begin = 255;
+	}
+	output -> color[2][row][col] = output_begin;
     }
   }
   #if defined(__arm__)
