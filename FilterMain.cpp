@@ -163,10 +163,10 @@ applyFilter(struct Filter *filter, cs1300bmp *input, cs1300bmp *output)
   int output_begin;
 	
 
-  for(int col = 1; col < input_width; col++) {
-    colminus = col-1;
-    for(int row = 1; row < input_height ; row++) {
-      rowminus = row-1;
+  for(int row = 1; row < input_height; row++) {
+    rowminus = row-1;
+    for(int col = 1; col < input_width ; col++) {
+      colminus = col-1;
 
 	output_begin = 0;
         output_begin = output_begin + (input->color[0][rowminus][colminus] * get00);
