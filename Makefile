@@ -2,7 +2,7 @@
 ##
 
 CXX	=g++
-CXXFLAGS= -static -O2 -pipe
+CXXFLAGS= -O2 -pipe -fopenmp
 
 goals: judge
 	echo "Done"
